@@ -6,10 +6,23 @@ function EasyHTTP() {
 EasyHTTP.prototype.get = function (url, callback) {
   const { http } = this
 
+  // 2. Configure it: GET-request for the URL
   http.open('GET', url)
+
+  // 3. Send the request over the network  
   http.send()
+
+  // 4. This will be called after the response is received
   http.onload = () => {
-    callback(http.responseText)
+    if (http.status === 200) {
+      callback(null, http.responseText)
+    } else {
+      callback(`Error: ${http.status}`)
+    }
+  }
+
+  http.onerror = () => {
+    alert('Request failed')
   }
 
   // return undefined
